@@ -105,7 +105,7 @@ library(jsonlite)
                         )
                )
              ),
-    tabPanel("Kmean",
+    tabPanel("Knn",
              sidebarLayout(
                sidebarPanel(
                  titlePanel("Hola")
@@ -123,7 +123,7 @@ library(jsonlite)
 server <- function(input, output, session) 
   {
   
-  ### Lectura
+  # Lectura
   
   output$tablainput <- renderDataTable({
     
@@ -216,7 +216,7 @@ server <- function(input, output, session)
     
   })
   
-  #REGRESION
+  #regresion
   
   output$modelo <- renderPlot({
     
@@ -257,6 +257,9 @@ server <- function(input, output, session)
        ylab("Nota en el curso de portugues tercer periodo")
    },height = 400,width = 600)
   
+  #muestreo
+  
+  #knn
   
 }
 
