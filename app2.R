@@ -12,7 +12,7 @@
 library(shiny)
 library(ggplot2)
 library(dplyr)
-
+gsub()
 {# Define UI for application that draws a histogram
 {ui <- fluidPage(
   tabsetPanel(
@@ -304,5 +304,52 @@ ggplot(dt,aes(x=dt[,1],y=dt[,2],color=dt[,3])) + geom_point()
 knn(dtentre,7,77)
 knn(dtentre,40,77)
 knn(dtentre,80,77)
+
+
+x<-c(14,7,13,12,16,14,18,13,12,16,13)
+
+y<-c(16,12,13,14,15,12,16,11,13,18,17)
+dt=data.frame(x,y)
+#dt es el dataframe de entrenamiento
+#vx son los datos de validacion
+#vy son los datos a predecir
+
+vx=c(10,12,14)
+regresion <-function(dt, vx){
+  lista<-list()
+  class(lista)
+  x=dt$x
+  y=dt$y
+  sumX=sum(x)
+  sumY=sum(y)
+  prodXY=sum(x*y)
+  promX=mean(x)
+  dt$x2=x^2
+  dt$y2=y^2
+  x2=sum(x^2)
+  y2=sum(y^2)
+  
+  promY=mean(y)
+  #calculo de covarianza
+  cov=(prodXY/length(x))-(promX*promY)
+  #calculo de las desviacion estandar X, Y
+  dx=sqrt((x2/length(x))-promX^2)
+  dy=sqrt((y2/length(y))-promY^2)
+  #coeficiente de correlacion de Pearson
+  r=cov/(dx*dy)
+  #generando recta regresional
+  vy=promY+(cov/dx^2)*(vx-promX)
+  lista[[1]]<-dt# dt entrenamiento
+  lista[[2]]<-vx# datos de validacion
+  lista[[3]]<-vy# datos predecidos
+  lista[[4]]<-r
+  
+  #print(vy)
+  return (lista)
+}
+View(regresion(dt, vx)[[1]])
+regresion(dt, vx)[[2]]
+regresion(dt, vx)[[3]]
+regresion(dt, vx)[[4]]
 
 }
