@@ -257,11 +257,52 @@ server <- function(input, output, session)
   
   #muestreo
   
+  ids=sample(1:nrow(dt),nrow(dt)*0.8)
+  dtentre = dt[ids,]
+  nrow(dtentre)
+  dtvali=dt[-ids,]
+  ggplot(dtvali,aes(x=dtvali[,1],y=dtvali[,2],color=dtvali[,3])) + geom_point()
+  
   #knn
+  
+  knn <- function(dt,x,y){
+    p<-0
+    dm<-(abs(x-dt[,1])+abs(y-dt[,2]))
+    dt<-cbind(dt,dm)
+    minimo<-min(dm)
+    for (i in 1:nrow(dt)) {
+      if(minimo==dt[i,4])
+        p<-i
+    }
+    return(dt[p,3])
+  }
   
 }
 
 shinyApp(ui = ui, server = server)
 
+x<- sample(30:60,60,replace = T)
+y<- sample(60:100,60,replace = T)
+dt <- data.frame(x,y)
+
+categoria <- function(dt,n){
+  c<-c()
+  for(i in 1:n){
+    if(x[i]>29 & x[i]<40)
+      c<-c(c,'A')
+    else if(x[i]>39 & x[i]<50)
+      c<-c(c,'B')
+    else c<-c(c,'C')
+  }
+  dt<-cbind(dt,c)
+  return(dt)
+}
+dt<-categoria(dt,dim(dt)[1])
+ggplot(dt,aes(x=dt[,1],y=dt[,2],color=dt[,3])) + geom_point()
+
+
+knn(dtentre,7,77)
+knn(dtentre,40,77)
+knn(dtentre,80,77)
 
 }
