@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+#Trabajo Final
+##Carga de librerias y dataset
+```{r}
+library(dplyr)
+#library(stringr)
+#library(lubridate)
+
+DS<-read.csv("dataset.csv", header = TRUE, sep = ",")
+```
+##Datos del dataset a usar
+```{r}
+dim(DS)
+glimpse(DS)
+View(DS)
+```
+##Top 3 de las razones por la cual los padres eligen la escuela
+```{r}
+GPH <- unique(head(DS$reason))
+GPH
+```
+##Estudiantes mujeres mayores de 18 anios que vivan en la ciudad (Urban)
+```{r}
+MS<-subset(DS, age > 18, select = c(sex, age, address)) %>% filter(sex == "F", address == "U")
+MS
+```
+###Estudiantes del genero masculino con calificacion menor a 10 en el primer grado del periodo de la materia matematica 
+```{r}
+EMM10<-subset(DS, G1.x < 10, select = c(sex,G1.x))%>%filter(sex == "M")
+EMM10
+```
+###Cantidad de estudiantes por nota en la materia de matematica
+```{r}
+CEPM<- DS %>% select(G1.x) %>% count(G1.x)
+CEPM
+```
+###Estudiantes del genero femenino con nota aprobatoria en el segundo grado del periodo de la materia de portuguese del colegio Mousinho da Silveira
+```{r}
+EFNA<- subset(DS, G2.y > 10, select = c(sex,G1.x,school))%>%filter(sex == "M",school == "MS")
+EFNA
+```
+##Estudiantes varones menor a 18 anios que vivan en el campo (Rural) y con familias mayor a 3 miembros
+```{r}
+MH<-subset(DS, age < 18, select = c(sex, age, address, famsize)) %>% filter(sex == "M", address == "R", famsize == "GT3")
+View(MH)
+```
+##Estudiantes del colegio de Gabriel Pereira GP que tienen familias separadas y saber su apoderado de los cursos de Matematica (x)
+```{r}
+MH<-subset(DS, select = c(school, age, Pstatus, guardian.x)) %>% filter(school == "GP", Pstatus == "A")
+View(MH)
+```
+##Padres de familias que tengan estudios primarios (1) y sean de la zona Rural del colegio de GP
+```{r}
+PN<-subset(DS, select = c(school, sex, age, Medu, Fedu)) %>% filter(school == "GP", Fedu == "1", Medu == '1')
+View(PN)
+```
+##Estudiantes cuyos padres tengan el trabajo de madre sea ama de casa y padre sea de servicios de la zona urbana y sean del colegio Mousinho da Silveira (MS)
+```{r}
+MFJ<-subset(DS, select = c(school, sex, age, Mjob, Fjob)) %>% filter(school == "MS", Mjob == "at_home", Fjob == "services")
+View(MFJ)
+```
+##Apoderados de estudiantes menores a 18 cuyos padres no esten separados, la escuela sea MS, el apoderado de ambos cursos de matemática y portugues sea la madre.
+```{r}
+MFJ<-subset(DS, age < 19, select = c(school, sex, age, Pstatus, guardian.x, guardian.y)) %>% filter(school == "MS", Pstatus == "T", guardian.x == "mother", guardian.y == "mother")
+View(MFJ)
+```
+## Los estudiantes que se demoran menos de 30 min a en llegar al colegio de la zona urbana y que tengan clases extras de portugues y matematicas de la escuela GP
+```{r}
+STX<-subset(DS, select = c(school, sex, age, address, traveltime.x, traveltime.y, schoolsup.x, schoolsup.y)) %>% filter(school == "GP", address == "U", schoolsup.x == "yes", schoolsup.y == "yes", traveltime.x == c("2","1"), traveltime.y == c("2","1"))
+View(STX)
+```
+##Los estudiantes que pagan por clases de matematicas en el colegio de GP y MS, y que tengan el apoyo economico de sus familiares. 
+```{r}
+SPC <- subset(DS, select = c(school, sex, age, paid.x, famsup.x)) %>% filter(famsup.x == "yes", paid.x == "yes")
+View(SPC)
+```
+##Estudiantes de portugues cuyas faltas sean mayor a 3 y se tengo conocmiento que sale con sus amigos. Además que su edad sea menor a 16.
+```{r}
+SPC <- subset(DS,  absences.y > 3, select = c(school, sex, age, goout.y, absences.y)) %>% filter(school == "GP")
+View(SPC)
+```
+
+
+
+
