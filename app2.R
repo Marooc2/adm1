@@ -7,15 +7,13 @@
 #    http://shiny.rstudio.com/
 #
 
-#install.packages(c("shiny","ggplot2","dplyr","XML","dplyr","jsonlite"))
+#install.packages(c("shiny","ggplot2","dplyr"))
 
 library(shiny)
 library(ggplot2)
-library(XML)
 library(dplyr)
-library(jsonlite)
 
-# Define UI for application that draws a histogram
+{# Define UI for application that draws a histogram
 {ui <- fluidPage(
   tabsetPanel(
     tabPanel("Lectura de Datos",
@@ -266,3 +264,4 @@ server <- function(input, output, session)
 shinyApp(ui = ui, server = server)
 
 
+}
